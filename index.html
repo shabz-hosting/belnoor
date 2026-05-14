@@ -357,34 +357,37 @@ nav{
 /* FOOTER */
 
 footer{
-  padding:4rem 6rem;
+  background:var(--dark);
   border-top:1px solid var(--border);
+  padding:4rem 6rem;
   display:grid;
   grid-template-columns:2fr 1fr 1fr;
-  gap:3rem;
+  gap:4rem;
 }
 
 .footer-logo{
   font-family:'Bebas Neue',sans-serif;
   font-size:2rem;
-  margin-bottom:1rem;
+  letter-spacing:.12em;
 }
 
 .footer-logo span{
   color:var(--gold);
 }
 
-.footer-tagline{
-  color:var(--muted);
+.footer-text{
+  color:var(--steel);
   line-height:1.8;
+  margin-top:1rem;
 }
 
-.footer-col-title{
+.footer-title{
   color:var(--gold);
   text-transform:uppercase;
   letter-spacing:.2em;
-  margin-bottom:1rem;
   font-size:.8rem;
+  margin-bottom:1rem;
+  font-family:'Barlow Condensed',sans-serif;
 }
 
 .footer-links{
@@ -396,12 +399,23 @@ footer{
 }
 
 .footer-links a{
+  color:var(--steel);
   text-decoration:none;
-  color:var(--muted);
 }
 
 .footer-links a:hover{
-  color:var(--gold);
+  color:#fff;
+}
+
+.footer-bottom{
+  grid-column:1/-1;
+  border-top:1px solid var(--border);
+  padding-top:2rem;
+  margin-top:1rem;
+  display:flex;
+  justify-content:space-between;
+  color:#666;
+  font-size:.85rem;
 }
 
 /* MOBILE */
