@@ -4,1355 +4,720 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>BELNOOR — Industrial & Global Supply Solutions</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --black: #0a0a0a;
-    --dark: #111214;
-    --panel: #16181c;
-    --border: #2a2d33;
-    --gold: #c8a96e;
-    --gold-light: #e8cfa0;
-    --steel: #8a9ab0;
-    --white: #f0ede8;
-    --muted: #5a6070;
-    --accent: #c8a96e;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'Barlow', sans-serif;
-    font-weight: 300;
-    overflow-x: hidden;
-  }
-
-  /* Noise texture overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.35;
-  }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 4rem;
-    height: 72px;
-    background: rgba(10,10,10,0.92);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 0.12em;
-    color: var(--white);
-    text-decoration: none;
-  }
-
-  .nav-logo span { color: var(--gold); }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 2.5rem;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--steel);
-    text-decoration: none;
-    transition: color 0.2s;
-    position: relative;
-  }
-
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -4px; left: 0;
-    width: 0; height: 1px;
-    background: var(--gold);
-    transition: width 0.3s;
-  }
-
-  .nav-links a:hover { color: var(--white); }
-  .nav-links a:hover::after { width: 100%; }
-
-  .nav-links .nav-cta {
-    color: var(--black);
-    background: var(--gold);
-    padding: 0.5rem 1.4rem;
-    font-size: 0.8rem;
-    letter-spacing: 0.15em;
-    transition: background 0.2s, transform 0.2s;
-  }
-  .nav-links .nav-cta::after { display: none; }
-  .nav-links .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
-
-  /* Dropdown */
-  .has-dropdown { position: relative; }
-  .dropdown {
-    display: none;
-    position: absolute;
-    top: calc(100% + 16px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--panel);
-    border: 1px solid var(--border);
-    min-width: 220px;
-    padding: 0.5rem 0;
-  }
-  .has-dropdown:hover .dropdown { display: block; }
-  .dropdown a {
-    display: block;
-    padding: 0.65rem 1.4rem;
-    font-size: 0.8rem;
-    white-space: nowrap;
-  }
-  .dropdown a:hover { background: rgba(200,169,110,0.08); color: var(--gold); }
-  .dropdown a::after { display: none; }
-
-  /* ─── PAGES ─── */
-  .page { display: none; min-height: 100vh; }
-  .page.active { display: block; }
-
-  /* ─── HERO ─── */
-  #hero {
-    position: relative;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    padding-top: 72px;
-  }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(135deg, rgba(200,169,110,0.06) 0%, transparent 50%),
-      linear-gradient(to bottom, var(--black) 0%, var(--dark) 100%);
-  }
-
-  /* Grid lines */
-  .hero-bg::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px);
-    background-size: 80px 80px;
-  }
-
-  .hero-glow {
-    position: absolute;
-    width: 600px; height: 600px;
-    top: -100px; right: -100px;
-    background: radial-gradient(circle, rgba(200,169,110,0.1) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    padding: 0 6rem;
-    max-width: 900px;
-  }
-
-  .hero-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .hero-eyebrow::before {
-    content: '';
-    width: 40px; height: 1px;
-    background: var(--gold);
-  }
-
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(4rem, 9vw, 8rem);
-    line-height: 0.92;
-    letter-spacing: 0.03em;
-    color: var(--white);
-    margin-bottom: 2rem;
-  }
-
-  .hero-title .line-gold { color: var(--gold); }
-
-  .hero-sub {
-    font-size: 1.1rem;
-    font-weight: 300;
-    color: var(--steel);
-    line-height: 1.7;
-    max-width: 520px;
-    margin-bottom: 3rem;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-  }
-
-  .btn-primary {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 1rem 2.5rem;
-    background: var(--gold);
-    color: var(--black);
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-    display: inline-block;
-  }
-
-  .btn-primary:hover {
-    background: var(--gold-light);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(200,169,110,0.25);
-  }
-
-  .btn-outline {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 0.95rem 2.5rem;
-    background: transparent;
-    color: var(--white);
-    border: 1px solid var(--border);
-    cursor: pointer;
-    text-decoration: none;
-    transition: border-color 0.2s, color 0.2s;
-    display: inline-block;
-  }
-
-  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
-
-  /* Stats bar */
-  .stats-bar {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border-top: 1px solid var(--border);
-    z-index: 2;
-  }
-
-  .stat-item {
-    padding: 2rem 3rem;
-    border-right: 1px solid var(--border);
-  }
-
-  .stat-item:last-child { border-right: none; }
-
-  .stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.5rem;
-    color: var(--gold);
-    letter-spacing: 0.05em;
-  }
-
-  .stat-label {
-    font-size: 0.75rem;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 0.25rem;
-  }
-
-  /* ─── SECTION COMMONS ─── */
-  .section {
-    padding: 7rem 6rem;
-  }
-
-  .section-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .section-label::before {
-    content: '';
-    width: 30px; height: 1px;
-    background: var(--gold);
-  }
-
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    line-height: 1;
-    letter-spacing: 0.04em;
-    margin-bottom: 1.5rem;
-  }
-
-  .section-sub {
-    font-size: 1rem;
-    color: var(--steel);
-    line-height: 1.75;
-    max-width: 560px;
-  }
-
-  /* ─── ABOUT STRIP ─── */
-  .about-strip {
-    background: var(--panel);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 5rem 6rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: center;
-  }
-
-  .about-right p {
-    font-size: 0.95rem;
-    color: var(--steel);
-    line-height: 1.85;
-    margin-bottom: 1.25rem;
-  }
-
-  .divider-line {
-    width: 60px; height: 2px;
-    background: linear-gradient(to right, var(--gold), transparent);
-    margin: 2rem 0;
-  }
-
-  /* ─── SERVICE CARDS ─── */
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin-top: 4rem;
-  }
-
-  .service-card {
-    background: var(--dark);
-    padding: 2.5rem;
-    cursor: pointer;
-    transition: background 0.25s;
-    position: relative;
-    overflow: hidden;
-    text-decoration: none;
-    display: block;
-    color: inherit;
-  }
-
-  .service-card::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 2px;
-    background: var(--gold);
-    transition: width 0.4s;
-  }
-
-  .service-card:hover { background: var(--panel); }
-  .service-card:hover::before { width: 100%; }
-
-  .card-icon {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    display: block;
-  }
-
-  .card-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--white);
-    margin-bottom: 0.75rem;
-  }
-
-  .card-desc {
-    font-size: 0.88rem;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  .card-arrow {
-    margin-top: 1.5rem;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .service-card:hover .card-arrow { opacity: 1; }
-
-  /* ─── MARQUEE ─── */
-  .marquee-wrap {
-    overflow: hidden;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 1.25rem 0;
-    background: var(--panel);
-  }
-
-  .marquee-track {
-    display: flex;
-    gap: 0;
-    animation: marquee 28s linear infinite;
-    white-space: nowrap;
-  }
-
-  .marquee-item {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.05rem;
-    letter-spacing: 0.25em;
-    color: var(--muted);
-    padding: 0 2.5rem;
-    border-right: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-
-  .marquee-item.highlight { color: var(--gold); }
-
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* ─── SERVICE DETAIL PAGES ─── */
-  .service-hero {
-    padding-top: 72px;
-    min-height: 45vh;
-    display: flex;
-    align-items: flex-end;
-    position: relative;
-    overflow: hidden;
-    background: var(--dark);
-  }
-
-  .service-hero-bg {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(200,169,110,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(200,169,110,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-
-  .service-hero-glow {
-    position: absolute;
-    width: 400px; height: 400px;
-    bottom: -100px; right: 10%;
-    background: radial-gradient(circle, rgba(200,169,110,0.08) 0%, transparent 70%);
-  }
-
-  .service-hero-content {
-    position: relative;
-    z-index: 2;
-    padding: 4rem 6rem;
-    max-width: 700px;
-  }
-
-  .back-btn {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-    padding: 0;
-    transition: gap 0.2s;
-  }
-
-  .back-btn:hover { gap: 0.75rem; }
-
-  .service-body {
-    padding: 5rem 6rem;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 5rem;
-  }
-
-  .service-body p {
-    font-size: 0.98rem;
-    color: var(--steel);
-    line-height: 1.85;
-    margin-bottom: 1.5rem;
-  }
-
-  .feature-list {
-    list-style: none;
-    margin-top: 2rem;
-  }
-
-  .feature-list li {
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.9rem;
-    color: var(--steel);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .feature-list li::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--gold);
-    flex-shrink: 0;
-  }
-
-  .side-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    padding: 2rem;
-    height: fit-content;
-    position: sticky;
-    top: 100px;
-  }
-
-  .side-card-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1.5rem;
-  }
-
-  .side-card p {
-    font-size: 0.88rem;
-    color: var(--steel);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-  }
-
-  /* ─── CONTACT PAGE ─── */
-  .contact-layout {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 0;
-    min-height: calc(100vh - 72px);
-    padding-top: 72px;
-  }
-
-  .contact-left {
-    background: var(--panel);
-    border-right: 1px solid var(--border);
-    padding: 5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .contact-right {
-    padding: 5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
 
-  .contact-info-item {
-    display: flex;
-    gap: 1.25rem;
-    align-items: flex-start;
-    margin-bottom: 2.5rem;
-  }
-
-  .info-icon {
-    width: 44px; height: 44px;
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    flex-shrink: 0;
-    color: var(--gold);
-  }
-
-  .info-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.3rem;
-  }
-
-  .info-value {
-    font-size: 0.95rem;
-    color: var(--white);
-    line-height: 1.5;
-  }
-
-  /* Form */
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .form-group {
-    margin-bottom: 1.25rem;
-  }
-
-  .form-group label {
-    display: block;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.6rem;
-  }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    color: var(--white);
-    padding: 0.85rem 1rem;
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 300;
-    outline: none;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-
-  .form-group select option { background: var(--panel); }
-
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    border-color: var(--gold);
-  }
-
-  .form-group textarea { resize: none; height: 130px; }
-
-  /* ─── FOOTER ─── */
-  footer {
-    background: var(--dark);
-    border-top: 1px solid var(--border);
-    padding: 4rem 6rem;
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 4rem;
-  }
-
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    letter-spacing: 0.12em;
-    color: var(--white);
-    margin-bottom: 1rem;
-  }
-
-  .footer-logo span { color: var(--gold); }
-
-  .footer-tagline {
-    font-size: 0.85rem;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-  }
-
-  .footer-col-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1.25rem;
-  }
-
-  .footer-links {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.65rem;
-  }
-
-  .footer-links a {
-    font-size: 0.88rem;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-    cursor: pointer;
-  }
-
-  .footer-links a:hover { color: var(--gold); }
-
-  .footer-bottom {
-    grid-column: 1 / -1;
-    border-top: 1px solid var(--border);
-    padding-top: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-bottom p {
-    font-size: 0.78rem;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-
-  /* ─── TOAST ─── */
-  .toast {
-    position: fixed;
-    bottom: 2rem; right: 2rem;
-    background: var(--gold);
-    color: var(--black);
-    padding: 1rem 1.75rem;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    z-index: 9000;
-    display: none;
-    animation: slideUp 0.3s ease;
-  }
-
-  @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
-  /* Animations */
-  .fade-in {
-    opacity: 0;
-    transform: translateY(24px);
-    animation: fadeIn 0.7s ease forwards;
-  }
-
-  @keyframes fadeIn {
-    to { opacity: 1; transform: translateY(0); }
-  }
+:root{
+  --black:#0a0a0a;
+  --dark:#111214;
+  --panel:#16181c;
+  --border:#2a2d33;
+  --gold:#c8a96e;
+  --gold-light:#e8cfa0;
+  --steel:#8a9ab0;
+  --white:#f0ede8;
+  --muted:#5a6070;
+
+  --hero-image:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1800&auto=format&fit=crop');
+
+  --industrial-image:url('https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?q=80&w=1600&auto=format&fit=crop');
+
+  --machinery-image:url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=1600&auto=format&fit=crop');
+
+  --crane-image:url('https://images.unsplash.com/photo-1513828583688-c52646db42da?q=80&w=1600&auto=format&fit=crop');
+
+  --auto-image:url('https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1600&auto=format&fit=crop');
+
+  --sourcing-image:url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1600&auto=format&fit=crop');
+
+  --supply-image:url('https://images.unsplash.com/photo-1494412651409-8963ce7935a7?q=80&w=1600&auto=format&fit=crop');
+
+  --marine-image:url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1600&auto=format&fit=crop');
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:var(--black);
+  color:var(--white);
+  font-family:'Barlow',sans-serif;
+  overflow-x:hidden;
+}
+
+/* Noise */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.25;
+  pointer-events:none;
+  z-index:999;
+}
+
+/* NAV */
+
+nav{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:1000;
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 4rem;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  letter-spacing:.12em;
+  font-size:2rem;
+  text-decoration:none;
+  color:var(--white);
+}
+
+.nav-logo span{
+  color:var(--gold);
+}
+
+.nav-links{
+  display:flex;
+  list-style:none;
+  gap:2rem;
+}
+
+.nav-links a{
+  color:var(--steel);
+  text-decoration:none;
+  font-family:'Barlow Condensed',sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:.85rem;
+  transition:.3s;
+}
+
+.nav-links a:hover{
+  color:var(--gold);
+}
+
+.nav-cta{
+  background:var(--gold);
+  color:#000 !important;
+  padding:.7rem 1.3rem;
+}
+
+/* HERO */
+
+#hero{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+  padding-top:72px;
+}
+
+.hero-bg{
+  position:absolute;
+  inset:0;
+  background:
+  linear-gradient(rgba(5,8,15,.75),rgba(5,8,15,.88)),
+  var(--hero-image) center/cover no-repeat;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  padding:0 6rem;
+  max-width:900px;
+}
+
+.hero-eyebrow{
+  color:var(--gold);
+  text-transform:uppercase;
+  letter-spacing:.3em;
+  margin-bottom:1.5rem;
+  font-size:.8rem;
+}
+
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4rem,9vw,8rem);
+  line-height:.9;
+  margin-bottom:2rem;
+}
+
+.hero-title .gold{
+  color:var(--gold);
+}
+
+.hero-sub{
+  max-width:600px;
+  color:var(--steel);
+  line-height:1.8;
+  font-size:1.1rem;
+  margin-bottom:2rem;
+}
+
+.btn-primary{
+  display:inline-block;
+  background:var(--gold);
+  color:#000;
+  text-decoration:none;
+  padding:1rem 2rem;
+  text-transform:uppercase;
+  font-family:'Barlow Condensed',sans-serif;
+  letter-spacing:.18em;
+  font-weight:700;
+  transition:.3s;
+}
+
+.btn-primary:hover{
+  background:var(--gold-light);
+  transform:translateY(-2px);
+}
+
+/* STATS */
+
+.stats-bar{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  background:rgba(0,0,0,.75);
+  border-top:1px solid var(--border);
+}
+
+.stat-item{
+  padding:2rem;
+  border-right:1px solid var(--border);
+}
+
+.stat-item:last-child{
+  border-right:none;
+}
+
+.stat-num{
+  font-family:'Bebas Neue',sans-serif;
+  color:var(--gold);
+  font-size:2.5rem;
+}
+
+.stat-label{
+  color:var(--muted);
+  text-transform:uppercase;
+  font-size:.75rem;
+  letter-spacing:.12em;
+}
+
+/* SECTION */
+
+.section{
+  padding:6rem;
+}
+
+.section-label{
+  color:var(--gold);
+  text-transform:uppercase;
+  letter-spacing:.3em;
+  margin-bottom:1rem;
+  font-size:.8rem;
+}
+
+.section-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.5rem,5vw,5rem);
+  line-height:1;
+  margin-bottom:1rem;
+}
+
+.section-sub{
+  color:var(--steel);
+  max-width:650px;
+  line-height:1.8;
+}
+
+/* ABOUT */
+
+.about-strip{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5rem;
+  background:var(--panel);
+  padding:6rem;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+
+.about-right p{
+  color:var(--steel);
+  line-height:1.9;
+  margin-bottom:1.5rem;
+}
+
+/* SERVICES */
+
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+  margin-top:4rem;
+}
+
+.service-card{
+  position:relative;
+  min-height:340px;
+  overflow:hidden;
+  text-decoration:none;
+  color:#fff;
+  padding:2rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  background-size:cover;
+  background-position:center;
+  transition:transform .3s;
+}
+
+.service-card:hover{
+  transform:translateY(-5px);
+}
+
+.service-card::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.3));
+}
+
+.service-card > *{
+  position:relative;
+  z-index:2;
+}
+
+.service-industrial{
+  background-image:var(--industrial-image);
+}
+
+.service-machinery{
+  background-image:var(--machinery-image);
+}
+
+.service-crane{
+  background-image:var(--crane-image);
+}
+
+.service-auto{
+  background-image:var(--auto-image);
+}
+
+.service-sourcing{
+  background-image:var(--sourcing-image);
+}
+
+.service-supply{
+  background-image:var(--supply-image);
+}
+
+.service-marine{
+  background-image:var(--marine-image);
+}
+
+.card-title{
+  font-family:'Barlow Condensed',sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:.7rem;
+  font-size:1.4rem;
+}
+
+.card-desc{
+  color:#ddd;
+  line-height:1.7;
+}
+
+/* FOOTER */
+
+footer{
+  padding:4rem 6rem;
+  border-top:1px solid var(--border);
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:3rem;
+}
+
+.footer-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;
+  margin-bottom:1rem;
+}
+
+.footer-logo span{
+  color:var(--gold);
+}
+
+.footer-tagline{
+  color:var(--muted);
+  line-height:1.8;
+}
+
+.footer-col-title{
+  color:var(--gold);
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  margin-bottom:1rem;
+  font-size:.8rem;
+}
+
+.footer-links{
+  list-style:none;
+}
+
+.footer-links li{
+  margin-bottom:.8rem;
+}
+
+.footer-links a{
+  text-decoration:none;
+  color:var(--muted);
+}
+
+.footer-links a:hover{
+  color:var(--gold);
+}
+
+/* MOBILE */
+
+@media(max-width:1200px){
+
+  .services-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:900px){
+
+  nav{
+    padding:0 2rem;
+  }
+
+  .hero-content,
+  .section,
+  .about-strip,
+  footer{
+    padding-left:2rem;
+    padding-right:2rem;
+  }
+
+  .about-strip{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:768px){
+
+  nav{
+    height:auto;
+    flex-direction:column;
+    align-items:flex-start;
+    padding:1rem;
+    gap:1rem;
+  }
+
+  .nav-links{
+    flex-wrap:wrap;
+    gap:1rem;
+  }
+
+  #hero{
+    min-height:auto;
+    padding-bottom:2rem;
+  }
+
+  .hero-content{
+    padding-top:4rem;
+  }
+
+  .hero-title{
+    font-size:clamp(3rem,13vw,5rem);
+  }
+
+  .services-grid{
+    grid-template-columns:1fr;
+  }
+
+  .stats-bar{
+    position:relative;
+    grid-template-columns:1fr;
+  }
+
+  .stat-item{
+    border-right:none;
+    border-bottom:1px solid var(--border);
+  }
+
+  footer{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:480px){
+
+  .hero-content,
+  .section,
+  .about-strip,
+  footer{
+    padding-left:1.2rem;
+    padding-right:1.2rem;
+  }
+
+  .hero-sub{
+    font-size:.95rem;
+  }
+
+  .btn-primary{
+    width:100%;
+    text-align:center;
+  }
+
+}
 
-  .delay-1 { animation-delay: 0.1s; }
-  .delay-2 { animation-delay: 0.2s; }
-  .delay-3 { animation-delay: 0.3s; }
-  .delay-4 { animation-delay: 0.4s; }
 </style>
 </head>
+
 <body>
 
-<!-- ══════════ NAV ══════════ -->
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home')">BEL<span>NOOR</span></a>
+  <a href="#" class="nav-logo">
+    BEL<span>NOOR</span>
+  </a>
+
   <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home')">Home</a></li>
-    <li class="has-dropdown">
-      <a href="#" onclick="showPage('services')">Services ▾</a>
-      <div class="dropdown">
-        <a href="#" onclick="showService('industrial')">Industrial Product Supply</a>
-        <a href="#" onclick="showService('machinery')">High-End Machineries</a>
-        <a href="#" onclick="showService('crane')">Crane & Excavators</a>
-        <a href="#" onclick="showService('auto')">Automobile Supply</a>
-        <a href="#" onclick="showService('sourcing')">Global Sourcing</a>
-        <a href="#" onclick="showService('supply')">Global Supply Chain</a>
-        <a href="#" onclick="showService('marine')">Marine Transport</a>
-      </div>
-    </li>
-    <li><a href="#" onclick="showPage('contact')" class="nav-cta">Contact Us</a></li>
+    <li><a href="#">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
   </ul>
 </nav>
 
-<!-- ══════════ HOME PAGE ══════════ -->
-<div id="page-home" class="page active">
+<section id="hero">
 
-  <!-- Hero -->
-  <section id="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-glow"></div>
-    <div class="hero-content">
-      <div class="hero-eyebrow fade-in">Global Industrial Solutions</div>
-      <h1 class="hero-title fade-in delay-1">
-        POWERING<br><span class="line-gold">INDUSTRY.</span><br>MOVING WORLDS.
-      </h1>
-      <p class="hero-sub fade-in delay-2">
-        From heavy-lift cranes to maritime logistics — BELNOOR delivers precision-engineered supply chains across six continents. Built for scale. Designed for reliability.
+  <div class="hero-bg"></div>
+
+  <div class="hero-content">
+
+    <div class="hero-eyebrow">
+      Global Industrial Solutions
+    </div>
+
+    <h1 class="hero-title">
+      POWERING<br>
+      <span class="gold">INDUSTRY.</span><br>
+      MOVING WORLDS.
+    </h1>
+
+    <p class="hero-sub">
+      From heavy-lift cranes to maritime logistics — BELNOOR delivers precision-engineered supply chains across six continents.
+    </p>
+
+    <a href="#" class="btn-primary">
+      Explore Services
+    </a>
+
+  </div>
+
+  <div class="stats-bar">
+
+    <div class="stat-item">
+      <div class="stat-num">140+</div>
+      <div class="stat-label">Countries Served</div>
+    </div>
+
+    <div class="stat-item">
+      <div class="stat-num">3800+</div>
+      <div class="stat-label">Projects Delivered</div>
+    </div>
+
+    <div class="stat-item">
+      <div class="stat-num">28YR</div>
+      <div class="stat-label">Industry Experience</div>
+    </div>
+
+    <div class="stat-item">
+      <div class="stat-num">99.4%</div>
+      <div class="stat-label">On-Time Delivery</div>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="about-strip" id="about">
+
+  <div>
+    <div class="section-label">Who We Are</div>
+
+    <h2 class="section-title">
+      BUILT ON STEEL.<br>
+      DRIVEN BY PRECISION.
+    </h2>
+  </div>
+
+  <div class="about-right">
+    <p>
+      BELNOOR is a global leader in industrial product supply, heavy machinery procurement, and end-to-end logistics.
+    </p>
+
+    <p>
+      We partner with construction giants, energy conglomerates, and government organizations across the globe.
+    </p>
+
+    <p>
+      Our expertise spans industrial sourcing, heavy machinery, marine transport, and integrated supply chain solutions.
+    </p>
+  </div>
+
+</section>
+
+<section class="section" id="services">
+
+  <div class="section-label">
+    Our Services
+  </div>
+
+  <h2 class="section-title">
+    SEVEN PILLARS OF<br>
+    SUPPLY EXCELLENCE
+  </h2>
+
+  <p class="section-sub">
+    Comprehensive industrial procurement and logistics solutions engineered for demanding industries.
+  </p>
+
+  <div class="services-grid">
+
+    <a href="#" class="service-card service-industrial">
+      <div class="card-title">Industrial Product Supply</div>
+      <p class="card-desc">
+        End-to-end procurement of industrial components and operational consumables.
       </p>
-    </div>
-    <div class="stats-bar fade-in delay-4">
-      <div class="stat-item">
-        <div class="stat-num">140+</div>
-        <div class="stat-label">Countries Served</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">3,800+</div>
-        <div class="stat-label">Projects Delivered</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">28yr</div>
-        <div class="stat-label">Industry Experience</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">99.4%</div>
-        <div class="stat-label">On-Time Delivery</div>
-      </div>
-    </div>
-  </section>
+    </a>
 
-  <!-- Marquee -->
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <span class="marquee-item highlight">Industrial Supply</span>
-      <span class="marquee-item">High-End Machinery</span>
-      <span class="marquee-item highlight">Crane & Excavators</span>
-      <span class="marquee-item">Automobile Supply</span>
-      <span class="marquee-item highlight">Global Sourcing</span>
-      <span class="marquee-item">Marine Transport</span>
-      <span class="marquee-item highlight">Supply Chain</span>
-      <span class="marquee-item">Heavy Equipment</span>
-      <span class="marquee-item highlight">Industrial Supply</span>
-      <span class="marquee-item">High-End Machinery</span>
-      <span class="marquee-item highlight">Crane & Excavators</span>
-      <span class="marquee-item">Automobile Supply</span>
-      <span class="marquee-item highlight">Global Sourcing</span>
-      <span class="marquee-item">Marine Transport</span>
-      <span class="marquee-item highlight">Supply Chain</span>
-      <span class="marquee-item">Heavy Equipment</span>
-    </div>
-  </div>
-
-  <!-- About -->
-  <div class="about-strip">
-    <div class="about-left">
-      <div class="section-label">Who We Are</div>
-      <h2 class="section-title">BUILT ON STEEL. DRIVEN BY PRECISION.</h2>
-      <div class="divider-line"></div>
-      <a href="#" class="btn-primary" onclick="showPage('services')">Our Services</a>
-    </div>
-    <div class="about-right">
-      <p>BELNOOR is a global leader in industrial product supply, heavy machinery procurement, and end-to-end logistics. For nearly three decades, we have partnered with construction giants, energy conglomerates, and government bodies to source and deliver critical equipment.</p>
-      <p>Our expertise spans seven specialized verticals — from high-torque cranes and hydraulic excavators to automobile fleet supply and trans-oceanic marine transport. Every engagement is backed by a team of certified engineers, procurement specialists, and logistics commanders.</p>
-      <p>With deep supplier networks across Asia, Europe, and the Americas, we reduce lead times, eliminate procurement bottlenecks, and ensure every component meets the highest international standards.</p>
-    </div>
-  </div>
-
-  <!-- Services Overview -->
-  <section class="section" style="padding-top: 5rem;">
-    <div class="section-label">What We Do</div>
-    <h2 class="section-title">SEVEN PILLARS OF SUPPLY EXCELLENCE</h2>
-    <div class="services-grid">
-      <a class="service-card" href="#" onclick="showService('industrial')">
-        <span class="card-icon">⚙️</span>
-        <div class="card-title">Industrial Product Supply</div>
-        <p class="card-desc">End-to-end procurement of industrial components, consumables, and specialized equipment for large-scale operations.</p>
-        <div class="card-arrow">View Details →</div>
-      </a>
-      <a class="service-card" href="#" onclick="showService('machinery')">
-        <span class="card-icon">🏗️</span>
-        <div class="card-title">High-End Machineries</div>
-        <p class="card-desc">Premium machinery sourcing from Tier-1 global manufacturers with full certification and after-sales support.</p>
-        <div class="card-arrow">View Details →</div>
-      </a>
-      <a class="service-card" href="#" onclick="showService('crane')">
-        <span class="card-icon">🏚️</span>
-        <div class="card-title">Crane & Excavators</div>
-        <p class="card-desc">Heavy-lift cranes, hydraulic excavators, and earthmoving equipment for construction and energy sectors.</p>
-        <div class="card-arrow">View Details →</div>
-      </a>
-      <a class="service-card" href="#" onclick="showService('auto')">
-        <span class="card-icon">🚛</span>
-        <div class="card-title">Automobile Supply</div>
-        <p class="card-desc">Fleet and vehicle sourcing for commercial, industrial, and government operations across all vehicle categories.</p>
-        <div class="card-arrow">View Details →</div>
-      </a>
-      <a class="service-card" href="#" onclick="showService('sourcing')">
-        <span class="card-icon">🌐</span>
-        <div class="card-title">Global Sourcing</div>
-        <p class="card-desc">Strategic sourcing from vetted international suppliers — price optimization, quality assurance, and compliance guaranteed.</p>
-        <div class="card-arrow">View Details →</div>
-      </a>
-      <a class="service-card" href="#" onclick="showService('supply')">
-        <span class="card-icon">📦</span>
-        <div class="card-title">Global Supply Chain</div>
-        <p class="card-desc">Integrated supply chain management from origin to destination — tracking, customs, warehousing, and last-mile delivery.</p>
-        <div class="card-arrow">View Details →</div>
-      </a>
-    </div>
-    <div style="margin-top: 1px; background: var(--border);">
-      <a class="service-card" href="#" onclick="showService('marine')" style="display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 2rem; padding: 2rem 2.5rem;">
-        <span class="card-icon" style="margin-bottom:0; font-size:1.5rem;">⚓</span>
-        <div>
-          <div class="card-title" style="margin-bottom: 0.4rem;">Marine Transport</div>
-          <p class="card-desc" style="margin: 0;">Bulk cargo, containerized freight, and specialized vessel chartering for international seaborne trade routes.</p>
-        </div>
-        <div class="card-arrow" style="opacity: 1; white-space: nowrap;">View Details →</div>
-      </a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div>
-      <div class="footer-logo">BEL<span>NOOR</span></div>
-      <p class="footer-tagline">Precision industrial supply and global logistics solutions. Trusted by industry leaders across 140+ countries.</p>
-    </div>
-    <div>
-      <div class="footer-col-title">Services</div>
-      <ul class="footer-links">
-        <li><a onclick="showService('industrial')">Industrial Supply</a></li>
-        <li><a onclick="showService('machinery')">Machineries</a></li>
-        <li><a onclick="showService('crane')">Crane & Excavators</a></li>
-        <li><a onclick="showService('auto')">Automobile Supply</a></li>
-        <li><a onclick="showService('sourcing')">Global Sourcing</a></li>
-        <li><a onclick="showService('supply')">Supply Chain</a></li>
-        <li><a onclick="showService('marine')">Marine Transport</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Company</div>
-      <ul class="footer-links">
-        <li><a onclick="showPage('home')">About Us</a></li>
-        <li><a onclick="showPage('contact')">Contact</a></li>
-        <li><a href="#">Certifications</a></li>
-        <li><a href="#">Careers</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Contact</div>
-      <ul class="footer-links">
-        <li><a href="mailto:info@BELNOOR.com">info@BELNOOR.com</a></li>
-        <li><a href="tel:+1800555000">+1 800 555 0000</a></li>
-        <li><a href="#">Global Offices</a></li>
-      </ul>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 BELNOOR Industrial Solutions. All rights reserved.</p>
-      <p>Privacy Policy · Terms of Service</p>
-    </div>
-  </footer>
-
-</div>
-
-<!-- ══════════ SERVICES PAGE ══════════ -->
-<div id="page-services" class="page">
-
-  <div class="service-hero">
-    <div class="service-hero-bg"></div>
-    <div class="service-hero-glow"></div>
-    <div class="service-hero-content">
-      <div class="section-label">What We Offer</div>
-      <h1 class="hero-title" style="font-size: clamp(3rem, 6vw, 6rem);">OUR SERVICES</h1>
-      <p class="hero-sub">Comprehensive industrial supply and global logistics — seven specialized verticals engineered for demanding environments.</p>
-    </div>
-  </div>
-
-  <section class="section">
-    <div class="services-grid">
-      <a class="service-card" href="#" onclick="showService('industrial')">
-        <span class="card-icon">⚙️</span>
-        <div class="card-title">Industrial Product Supply</div>
-        <p class="card-desc">End-to-end procurement of industrial components, consumables, and specialized equipment for large-scale operations worldwide.</p>
-        <div class="card-arrow">View Details →</div>
-      </a>
-      <a class="service-card" href="#" onclick="showService('machinery')">
-        <span class="card-icon">🏗️</span>
-        <div class="card-title">High-End Machineries</div>
-        <p class="card-desc">Premium machinery sourcing from Tier-1 global manufacturers with full certification and after-sales engineering support.</p>
-        <div class="card-arrow">View Details →</div>
-      </a>
-      <a class="service-card" href="#" onclick="showService('crane')">
-        <span class="card-icon">🏚️</span>
-        <div class="card-title">Crane & Excavators</div>
-        <p class="card-desc">Heavy-lift cranes, hydraulic excavators, and earthmoving equipment for construction, energy, and infrastructure sectors.</p>
-        <div class="card-arrow">View Details →</div>
-      </a>
-      <a class="service-card" href="#" onclick="showService('auto')">
-        <span class="card-icon">🚛</span>
-        <div class="card-title">Automobile Supply</div>
-        <p class="card-desc">Fleet and vehicle sourcing for commercial, industrial, and government operations across all vehicle categories and scales.</p>
-        <div class="card-arrow">View Details →</div>
-      </a>
-      <a class="service-card" href="#" onclick="showService('sourcing')">
-        <span class="card-icon">🌐</span>
-        <div class="card-title">Global Sourcing</div>
-        <p class="card-desc">Strategic sourcing from vetted international suppliers — price optimization, quality assurance, and full compliance guaranteed.</p>
-        <div class="card-arrow">View Details →</div>
-      </a>
-      <a class="service-card" href="#" onclick="showService('supply')">
-        <span class="card-icon">📦</span>
-        <div class="card-title">Global Supply Chain</div>
-        <p class="card-desc">Integrated supply chain management from origin to destination — tracking, customs clearance, warehousing, and last-mile delivery.</p>
-        <div class="card-arrow">View Details →</div>
-      </a>
-    </div>
-    <div style="margin-top: 1px; background: var(--border);">
-      <a class="service-card" href="#" onclick="showService('marine')" style="display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 2rem; padding: 2rem 2.5rem;">
-        <span class="card-icon" style="margin-bottom:0; font-size:1.5rem;">⚓</span>
-        <div>
-          <div class="card-title" style="margin-bottom: 0.4rem;">Marine Transport</div>
-          <p class="card-desc" style="margin: 0;">Bulk cargo, containerized freight, and specialized vessel chartering for international seaborne trade routes.</p>
-        </div>
-        <div class="card-arrow" style="opacity: 1; white-space: nowrap;">View Details →</div>
-      </a>
-    </div>
-  </section>
-
-  <footer>
-    <div>
-      <div class="footer-logo">BEL<span>NOOR</span></div>
-      <p class="footer-tagline">Precision industrial supply and global logistics solutions. Trusted by industry leaders across 140+ countries.</p>
-    </div>
-    <div>
-      <div class="footer-col-title">Services</div>
-      <ul class="footer-links">
-        <li><a onclick="showService('industrial')">Industrial Supply</a></li>
-        <li><a onclick="showService('machinery')">Machineries</a></li>
-        <li><a onclick="showService('crane')">Crane & Excavators</a></li>
-        <li><a onclick="showService('auto')">Automobile Supply</a></li>
-        <li><a onclick="showService('sourcing')">Global Sourcing</a></li>
-        <li><a onclick="showService('supply')">Supply Chain</a></li>
-        <li><a onclick="showService('marine')">Marine Transport</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Company</div>
-      <ul class="footer-links">
-        <li><a onclick="showPage('home')">About Us</a></li>
-        <li><a onclick="showPage('contact')">Contact</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Contact</div>
-      <ul class="footer-links">
-        <li><a href="mailto:info@BELNOOR.com">info@BELNOOR.com</a></li>
-        <li><a href="tel:+1800555000">+1 800 555 0000</a></li>
-      </ul>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 BELNOOR Industrial Solutions. All rights reserved.</p>
-      <p>Privacy Policy · Terms of Service</p>
-    </div>
-  </footer>
-</div>
-
-<!-- ══════════ SERVICE DETAIL PAGE ══════════ -->
-<div id="page-service-detail" class="page">
-  <div class="service-hero">
-    <div class="service-hero-bg"></div>
-    <div class="service-hero-glow"></div>
-    <div class="service-hero-content">
-      <button class="back-btn" onclick="showPage('services')">← Back to Services</button>
-      <div class="section-label" id="detail-label"></div>
-      <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 5rem);" id="detail-title"></h1>
-      <p class="hero-sub" id="detail-tagline"></p>
-    </div>
-  </div>
-  <div class="service-body">
-    <div>
-      <div id="detail-body"></div>
-    </div>
-    <div>
-      <div class="side-card">
-        <div class="side-card-title">Ready to Procure?</div>
-        <p>Speak with a specialist for this service. Get a tailored quote within 24 hours.</p>
-        <a href="#" class="btn-primary" onclick="showPage('contact')" style="display: block; text-align: center;">Request a Quote</a>
-        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-          <div class="side-card-title">Call Us Direct</div>
-          <p style="margin-bottom: 0;">+1 800 555 0000<br>Mon–Fri, 08:00–20:00 GMT</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════ CONTACT PAGE ══════════ -->
-<div id="page-contact" class="page">
-  <div class="contact-layout">
-    <div class="contact-left">
-      <div class="section-label">Reach Out</div>
-      <h2 class="section-title" style="font-size: clamp(2.5rem, 4vw, 4rem); margin-bottom: 0.5rem;">LET'S BUILD<br>SOMETHING BIG.</h2>
-      <div class="divider-line"></div>
-      <p style="font-size: 0.95rem; color: var(--steel); line-height: 1.8; margin-bottom: 3rem; max-width: 420px;">
-        Whether you need a single piece of heavy equipment or a fully managed supply chain — our team is ready. Submit an inquiry and a specialist will respond within one business day.
+    <a href="#" class="service-card service-machinery">
+      <div class="card-title">High-End Machineries</div>
+      <p class="card-desc">
+        Premium machinery sourcing from world-leading manufacturers.
       </p>
-      <div class="contact-info-item">
-        <div class="info-icon">✉</div>
-        <div>
-          <div class="info-label">Email</div>
-          <div class="info-value">info@BELNOOR.com<br>quotes@BELNOOR.com</div>
-        </div>
-      </div>
-      <div class="contact-info-item">
-        <div class="info-icon">☎</div>
-        <div>
-          <div class="info-label">Phone</div>
-          <div class="info-value">+1 800 555 0000<br>+44 20 7000 0000</div>
-        </div>
-      </div>
-      <div class="contact-info-item">
-        <div class="info-icon">◎</div>
-        <div>
-          <div class="info-label">Headquarters</div>
-          <div class="info-value">88 Harbor Point Drive, Suite 1200<br>Houston, TX 77002, USA</div>
-        </div>
-      </div>
-    </div>
+    </a>
 
-    <div class="contact-right">
-      <div class="section-label" style="margin-bottom: 2rem;">Send an Enquiry</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>First Name</label>
-          <input type="text" placeholder="John">
-        </div>
-        <div class="form-group">
-          <label>Last Name</label>
-          <input type="text" placeholder="Doe">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Company</label>
-        <input type="text" placeholder="Your Company Name">
-      </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" placeholder="john@company.com">
-      </div>
-      <div class="form-group">
-        <label>Service of Interest</label>
-        <select>
-          <option value="">Select a service…</option>
-          <option>Industrial Product Supply</option>
-          <option>High-End Machineries</option>
-          <option>Crane & Excavators</option>
-          <option>Automobile Supply</option>
-          <option>Global Sourcing</option>
-          <option>Global Supply Chain</option>
-          <option>Marine Transport</option>
-          <option>Multiple / General Enquiry</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Message</label>
-        <textarea placeholder="Describe your requirements — quantities, specifications, delivery timeline…"></textarea>
-      </div>
-      <button class="btn-primary" style="width: 100%; padding: 1.1rem;" onclick="submitForm()">Submit Enquiry</button>
-    </div>
+    <a href="#" class="service-card service-crane">
+      <div class="card-title">Crane & Excavators</div>
+      <p class="card-desc">
+        Heavy-lift cranes and earthmoving solutions for large-scale projects.
+      </p>
+    </a>
+
+    <a href="#" class="service-card service-auto">
+      <div class="card-title">Automobile Supply</div>
+      <p class="card-desc">
+        Fleet and commercial vehicle procurement across industries.
+      </p>
+    </a>
+
+    <a href="#" class="service-card service-sourcing">
+      <div class="card-title">Global Sourcing</div>
+      <p class="card-desc">
+        Strategic sourcing from verified international suppliers.
+      </p>
+    </a>
+
+    <a href="#" class="service-card service-supply">
+      <div class="card-title">Global Supply Chain</div>
+      <p class="card-desc">
+        Integrated supply chain management from origin to destination.
+      </p>
+    </a>
+
   </div>
-</div>
 
-<!-- Toast -->
-<div class="toast" id="toast">✓ &nbsp; Message sent! We'll be in touch shortly.</div>
+</section>
 
-<script>
-const serviceData = {
-  industrial: {
-    label: "Industrial Supply",
-    title: "INDUSTRIAL PRODUCT SUPPLY",
-    tagline: "Comprehensive procurement of industrial components and consumables for large-scale global operations.",
-    body: `
-      <p>BELNOOR's Industrial Product Supply division delivers a complete spectrum of industrial components, raw materials, safety equipment, and operational consumables to facilities worldwide. We serve oil & gas, petrochemical, manufacturing, power generation, and construction sectors.</p>
-      <p>Our procurement team maintains active relationships with over 2,000 verified suppliers across 60 countries, enabling rapid sourcing of both standard and highly specialized items — from flanges and valves to precision measurement instruments.</p>
-      <p>All products are quality-checked against client specifications and international standards (ISO, ASTM, DIN, BS) before dispatch. We manage full documentation — material test reports, mill certificates, and compliance declarations.</p>
-      <ul class="feature-list">
-        <li>Valves, flanges, fittings, and piping systems</li>
-        <li>Electrical components and instrumentation</li>
-        <li>Safety and PPE equipment</li>
-        <li>MRO (Maintenance, Repair & Operations) consumables</li>
-        <li>Fasteners, gaskets, and sealing systems</li>
-        <li>Chemical and process industry equipment</li>
-        <li>Full material certification and traceability</li>
-      </ul>
-    `
-  },
-  machinery: {
-    label: "High-End Machineries",
-    title: "HIGH-END MACHINERIES",
-    tagline: "Sourcing precision-engineered machines from the world's leading manufacturers.",
-    body: `
-      <p>We specialize in sourcing and delivering high-specification industrial machinery from globally recognized Tier-1 manufacturers. Our machinery portfolio spans CNC machining centers, turbines, compressors, pumping systems, and automation equipment.</p>
-      <p>Every procurement is handled by qualified engineers who assess specifications, performance requirements, and regulatory compliance — ensuring what you receive matches what you need, precisely. We also manage factory acceptance testing (FAT), shipping, and site delivery.</p>
-      <ul class="feature-list">
-        <li>CNC and precision machining centers</li>
-        <li>Industrial compressors and turbines</li>
-        <li>Pumping and fluid handling systems</li>
-        <li>Automation and robotic systems</li>
-        <li>Power generation equipment</li>
-        <li>Factory acceptance testing coordination</li>
-        <li>OEM documentation and warranty management</li>
-      </ul>
-    `
-  },
-  crane: {
-    label: "Crane & Excavators",
-    title: "CRANES & EXCAVATORS",
-    tagline: "Heavy-lift and earthmoving equipment for the world's most demanding construction environments.",
-    body: `
-      <p>BELNOOR is a premier supplier of heavy-lift cranes, hydraulic excavators, and earthmoving equipment to construction, infrastructure, energy, and mining clients globally. We source both new equipment and certified used machines — all inspected to rigorous safety standards.</p>
-      <p>Our heavy equipment specialists understand the technical nuances of load charts, reach envelopes, and terrain specifications. We match the right machine to your project — then handle transport, customs, and delivery to site.</p>
-      <ul class="feature-list">
-        <li>Mobile and crawler cranes (50T – 1,600T capacity)</li>
-        <li>Tower cranes for high-rise construction</li>
-        <li>Hydraulic and rope excavators</li>
-        <li>Bulldozers, graders, and scrapers</li>
-        <li>Piling and drilling rigs</li>
-        <li>Certified used equipment inspection</li>
-        <li>Transport and rigging logistics</li>
-      </ul>
-    `
-  },
-  auto: {
-    label: "Automobile Supply",
-    title: "AUTOMOBILE SUPPLY",
-    tagline: "Fleet and vehicle procurement for commercial, industrial, and governmental operators.",
-    body: `
-      <p>Our Automobile Supply division manages the end-to-end procurement of commercial vehicles, industrial trucks, and specialized fleet units for governments, contractors, NGOs, and corporations. We source across all major vehicle brands with competitive pricing through our OEM partnerships.</p>
-      <p>From light utility vehicles to heavy-duty articulated trucks and armored transport, BELNOOR handles specification, procurement, preparation, and delivery — including RHD/LHD conversion, branding, and pre-delivery inspection.</p>
-      <ul class="feature-list">
-        <li>Light commercial and utility vehicles</li>
-        <li>Heavy trucks and articulated vehicles</li>
-        <li>Construction and off-road vehicles</li>
-        <li>Emergency and specialized vehicles</li>
-        <li>Fleet management consulting</li>
-        <li>Pre-delivery inspection and PDI reports</li>
-        <li>RHD/LHD conversion and customization</li>
-      </ul>
-    `
-  },
-  sourcing: {
-    label: "Global Sourcing",
-    title: "GLOBAL SOURCING",
-    tagline: "Strategic international procurement — quality, price, and compliance at every tier.",
-    body: `
-      <p>BELNOOR's Global Sourcing service gives clients direct access to our worldwide supplier network — vetted, audited, and performance-rated across Asia, Europe, North America, and the Middle East. We act as your trusted procurement arm in markets where relationships and expertise matter most.</p>
-      <p>Our sourcing specialists manage supplier qualification, price negotiation, quality audits, and contract terms — reducing your procurement costs while elevating supplier standards. All sourcing activities comply with our Ethics & Compliance framework.</p>
-      <ul class="feature-list">
-        <li>Supplier identification and qualification</li>
-        <li>Price benchmarking and negotiation</li>
-        <li>Factory and quality audits</li>
-        <li>Compliance and regulatory screening</li>
-        <li>Sample procurement and testing</li>
-        <li>Long-term supplier relationship management</li>
-        <li>Ethical sourcing and ESG compliance</li>
-      </ul>
-    `
-  },
-  supply: {
-    label: "Supply Chain",
-    title: "GLOBAL SUPPLY CHAIN",
-    tagline: "Integrated logistics — from origin to destination, seamlessly managed.",
-    body: `
-      <p>Our Global Supply Chain management service provides complete visibility and control over your goods from the moment they leave a supplier's facility to final delivery at your site. We manage freight, customs, warehousing, distribution, and last-mile logistics across all modes of transport.</p>
-      <p>Underpinned by our proprietary tracking platform, clients receive real-time cargo updates and proactive exception management. Our customs specialists operate in 80+ countries — reducing clearance delays and duty costs through expert classification and tariff optimization.</p>
-      <ul class="feature-list">
-        <li>Air, sea, and road freight management</li>
-        <li>Customs brokerage in 80+ countries</li>
-        <li>In-country warehousing and distribution</li>
-        <li>Real-time cargo tracking dashboard</li>
-        <li>Dangerous goods and hazmat handling</li>
-        <li>Supply chain risk assessment</li>
-        <li>Project cargo and out-of-gauge shipments</li>
-      </ul>
-    `
-  },
-  marine: {
-    label: "Marine Transport",
-    title: "MARINE TRANSPORT",
-    tagline: "Bulk cargo, containerized freight, and specialized vessel solutions for global seaborne trade.",
-    body: `
-      <p>BELNOOR's Marine Transport division provides comprehensive sea freight solutions — from full container load (FCL) shipments to bulk cargo, breakbulk, and heavy-lift vessel chartering. We have established relationships with major carriers and vessel owners worldwide.</p>
-      <p>Our marine logistics team handles charter party negotiations, cargo insurance, port operations, and stowage planning for even the most complex out-of-gauge or overweight cargo. We operate across all major international shipping lanes with coverage at 300+ ports globally.</p>
-      <ul class="feature-list">
-        <li>FCL and LCL containerized freight</li>
-        <li>Bulk and breakbulk cargo operations</li>
-        <li>Heavy-lift and project vessel chartering</li>
-        <li>Ro-Ro (Roll-on/Roll-off) transport</li>
-        <li>Marine cargo insurance</li>
-        <li>Port agency and stevedoring coordination</li>
-        <li>Coverage across 300+ global ports</li>
-      </ul>
-    `
-  }
-};
+<footer id="contact">
 
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  window.scrollTo(0, 0);
-}
+  <div>
 
-function showService(key) {
-  const d = serviceData[key];
-  document.getElementById('detail-label').textContent = d.label;
-  document.getElementById('detail-title').textContent = d.title;
-  document.getElementById('detail-tagline').textContent = d.tagline;
-  document.getElementById('detail-body').innerHTML = d.body;
-  showPage('service-detail');
-}
+    <div class="footer-logo">
+      BEL<span>NOOR</span>
+    </div>
 
-function submitForm() {
-  const toast = document.getElementById('toast');
-  toast.style.display = 'block';
-  setTimeout(() => { toast.style.display = 'none'; }, 4000);
-}
-</script>
+    <p class="footer-text">
+      Precision industrial supply and global logistics solutions trusted by clients across the world.
+    </p>
+
+  </div>
+
+  <div>
+
+    <div class="footer-title">Services</div>
+    <br>
+
+    <ul class="footer-links">
+      <li><a href="industrial.html">Industrial Product Supply</a></li>
+      <li><a href="high-end.html">High-End Machineries</a></li>
+      <li><a href="crane.html">Crane & Excavators</a></li>
+      <li><a href="global-sourcing.html">Global Sourcing</a></li>
+      <li><a href="supply.html">Global Supply Chain</a></li>
+      <li><a href="marine.html">Marine Transport</a></li>
+    </ul>
+
+  </div>
+
+  <div>
+
+    <div class="footer-title">Contact</div>
+    <br>
+
+    <ul class="footer-links">
+      <li><a href="#">belnoorgroup@gmail.com</a></li>
+      <li><a href="#">Dubai, UAE</a></li>
+    </ul>
+
+  </div>
+
+  <div class="footer-bottom">
+
+    <div>
+      © 2026 BELNOOR Industrial Solutions
+    </div>
+
+    <div>
+      Privacy Policy · Terms of Service
+    </div>
+
+  </div>
+
+</footer>
+
 </body>
 </html>
