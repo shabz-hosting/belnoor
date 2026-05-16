@@ -1,9 +1,14 @@
+<!-- ========================================= -->
+<!-- GLOBAL SOURCING PAGE -->
+<!-- global-sourcing.html -->
+<!-- ========================================= -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Belnoor — Global Sourcing</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Sourcing | Belnoor</title>
 <link rel="icon" type="image/x-icon" href="belnoor fav.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +25,6 @@
   --gold-light:#e8cfa0;
   --steel:#8a9ab0;
   --white:#f0ede8;
-  --muted:#5a6070;
 }
 
 *{
@@ -34,47 +38,35 @@ html{
 }
 
 body{
-  background:var(--black);
-  color:var(--white);
+  background:#0a0a0a;
+  color:#fff;
   font-family:'Barlow',sans-serif;
   overflow-x:hidden;
 }
 
-/* Noise */
-
-body::before{
-  content:'';
-  position:fixed;
-  inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none;
-  opacity:.35;
-  z-index:9999;
-}
-
-/* NAV */
+/* NAVBAR */
 
 nav{
   position:fixed;
   top:0;
   left:0;
   right:0;
-  z-index:1000;
   height:72px;
-  padding:0 4rem;
   display:flex;
   align-items:center;
   justify-content:space-between;
+  padding:0 4rem;
   background:rgba(10,10,10,.92);
   backdrop-filter:blur(14px);
   border-bottom:1px solid var(--border);
+  z-index:1000;
 }
 
 .nav-logo{
   text-decoration:none;
-  color:var(--white);
+  color:#fff;
   font-family:'Bebas Neue',sans-serif;
-  font-size:1.8rem;
+  font-size:2rem;
   letter-spacing:.12em;
 }
 
@@ -84,8 +76,7 @@ nav{
 
 .nav-links{
   display:flex;
-  align-items:center;
-  gap:2.2rem;
+  gap:2rem;
   list-style:none;
 }
 
@@ -96,261 +87,160 @@ nav{
   text-transform:uppercase;
   letter-spacing:.15em;
   font-size:.82rem;
-  font-weight:600;
-  transition:.25s;
-  position:relative;
-}
-
-.nav-links a:hover{
-  color:var(--white);
-}
-
-.nav-links a::after{
-  content:'';
-  position:absolute;
-  left:0;
-  bottom:-5px;
-  width:0;
-  height:1px;
-  background:var(--gold);
   transition:.3s;
 }
 
-.nav-links a:hover::after{
-  width:100%;
+.nav-links a:hover{
+  color:#fff;
 }
 
 .nav-cta{
   background:var(--gold);
-  color:var(--black)!important;
-  padding:.65rem 1.4rem;
-}
-
-.nav-cta::after{
-  display:none;
+  color:#000 !important;
+  padding:.7rem 1.4rem;
 }
 
 /* HERO */
 
 .hero{
+  min-height:70vh;
   position:relative;
-  min-height:75vh;
   display:flex;
-  align-items:center;
-  padding:120px 6rem 80px;
-  overflow:hidden;
-}
-
-.hero-image{
-  position:absolute;
-  inset:0;
+  align-items:flex-end;
+  padding:140px 6rem 5rem;
   background:
-  linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.82)),
-  url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=2000&auto=format&fit=crop') center/cover;
-}
-
-.hero-grid{
-  position:absolute;
-  inset:0;
-  background-image:
-  linear-gradient(rgba(200,169,110,.05) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(200,169,110,.05) 1px, transparent 1px);
-  background-size:80px 80px;
+  linear-gradient(rgba(0,0,0,.74),rgba(0,0,0,.9)),
+  url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1800&auto=format&fit=crop');
+  background-size:cover;
+  background-position:center;
 }
 
 .hero-content{
-  position:relative;
-  z-index:2;
-  max-width:760px;
+  max-width:850px;
 }
 
 .hero-label{
   color:var(--gold);
-  font-family:'Barlow Condensed',sans-serif;
   text-transform:uppercase;
   letter-spacing:.3em;
-  font-size:.75rem;
-  margin-bottom:1.2rem;
+  margin-bottom:1rem;
+  font-size:.8rem;
 }
 
 .hero-title{
   font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(4rem,9vw,7rem);
-  line-height:.92;
-  letter-spacing:.04em;
+  font-size:clamp(3rem,8vw,7rem);
+  line-height:.9;
   margin-bottom:1.5rem;
 }
 
-.hero-title span{
-  color:var(--gold);
-}
-
 .hero-sub{
-  max-width:620px;
   color:var(--steel);
-  line-height:1.9;
-  font-size:1.05rem;
+  line-height:1.8;
+  font-size:1.1rem;
 }
 
-/* SECTION */
+/* CONTENT */
 
 .section{
   padding:6rem;
 }
 
-.section-grid{
+.grid{
   display:grid;
-  grid-template-columns:1.2fr .9fr;
+  grid-template-columns:2fr 1fr;
   gap:4rem;
-  align-items:center;
 }
 
-.section-label{
-  color:var(--gold);
+.content h2{
   font-family:'Barlow Condensed',sans-serif;
-  letter-spacing:.25em;
   text-transform:uppercase;
-  font-size:.72rem;
-  margin-bottom:1rem;
-}
-
-.section-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(2.5rem,5vw,4.5rem);
-  line-height:1;
+  letter-spacing:.12em;
+  color:var(--gold);
   margin-bottom:1.5rem;
-  letter-spacing:.04em;
+  font-size:1.5rem;
 }
 
-.section-text{
-  color:var(--steel);
-  line-height:1.9;
-  margin-bottom:1.3rem;
-  font-size:.97rem;
-}
-
-.section-image{
-  min-height:520px;
-  border:1px solid var(--border);
-  background:
-  linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.25)),
-  url('https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=1600&auto=format&fit=crop') center/cover;
-}
-
-/* FEATURES */
-
-.features{
-  background:var(--panel);
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  padding:6rem;
-}
-
-.features-header{
-  margin-bottom:3rem;
-}
-
-.features-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:1px;
-  background:var(--border);
-}
-
-.feature-card{
-  background:var(--dark);
-  padding:2.5rem;
-  transition:.3s;
-}
-
-.feature-card:hover{
-  background:#1a1d21;
-}
-
-.feature-icon{
-  font-size:2rem;
-  margin-bottom:1.2rem;
-}
-
-.feature-title{
-  font-family:'Barlow Condensed',sans-serif;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  font-size:1.1rem;
-  margin-bottom:.8rem;
-}
-
-.feature-text{
-  color:var(--muted);
-  line-height:1.8;
-  font-size:.9rem;
-}
-
-/* IMAGE STRIP */
-
-.image-strip{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-}
-
-.strip{
-  min-height:320px;
-}
-
-.strip1{
-  background:url('https://images.unsplash.com/photo-1529078155058-5d716f45d604?q=80&w=1200&auto=format&fit=crop') center/cover;
-}
-
-.strip2{
-  background:url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&auto=format&fit=crop') center/cover;
-}
-
-.strip3{
-  background:url('https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=1200&auto=format&fit=crop') center/cover;
-}
-
-/* CTA */
-
-.cta{
-  padding:6rem;
-  text-align:center;
-}
-
-.cta-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(3rem,6vw,5rem);
-  letter-spacing:.05em;
-  margin-bottom:1rem;
-}
-
-.cta-title span{
-  color:var(--gold);
-}
-
-.cta-text{
-  max-width:720px;
-  margin:auto;
+.content p{
   color:var(--steel);
   line-height:1.9;
   margin-bottom:2rem;
 }
 
-.btn{
-  display:inline-block;
-  text-decoration:none;
-  background:var(--gold);
-  color:var(--black);
-  padding:1rem 2.4rem;
-  text-transform:uppercase;
-  letter-spacing:.18em;
+.features{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1rem;
+  margin-top:2rem;
+}
+
+.feature{
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:1.5rem;
+}
+
+.feature span{
+  color:var(--gold);
+  display:block;
+  margin-bottom:.7rem;
+}
+
+.sidebar{
+  display:flex;
+  flex-direction:column;
+  gap:2rem;
+}
+
+.sidebar-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:2rem;
+}
+
+.sidebar-card h3{
+  color:var(--gold);
+  margin-bottom:1rem;
   font-family:'Barlow Condensed',sans-serif;
+  text-transform:uppercase;
+}
+
+.sidebar-card p{
+  color:var(--steel);
+  line-height:1.8;
+}
+
+.btn{
+  display:block;
+  margin-top:1.5rem;
+  text-align:center;
+  background:var(--gold);
+  color:#000;
+  padding:1rem;
+  text-decoration:none;
+  text-transform:uppercase;
+  font-family:'Barlow Condensed',sans-serif;
+  letter-spacing:.15em;
   font-weight:700;
   transition:.3s;
 }
 
 .btn:hover{
-  background:var(--gold-light);
-  transform:translateY(-2px);
+  opacity:.85;
+}
+
+.gallery{
+  margin-top:4rem;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+}
+
+.gallery img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  border:1px solid var(--border);
 }
 
 /* FOOTER */
@@ -368,7 +258,6 @@ footer{
   font-family:'Bebas Neue',sans-serif;
   font-size:2rem;
   letter-spacing:.12em;
-  margin-bottom:1rem;
 }
 
 .footer-logo span{
@@ -376,18 +265,18 @@ footer{
 }
 
 .footer-text{
-  color:var(--muted);
+  color:var(--steel);
   line-height:1.8;
-  font-size:.9rem;
+  margin-top:1rem;
 }
 
 .footer-title{
   color:var(--gold);
-  font-family:'Barlow Condensed',sans-serif;
   text-transform:uppercase;
   letter-spacing:.2em;
-  font-size:.72rem;
-  margin-bottom:1.2rem;
+  font-size:.8rem;
+  margin-bottom:1rem;
+  font-family:'Barlow Condensed',sans-serif;
 }
 
 .footer-links{
@@ -395,41 +284,35 @@ footer{
 }
 
 .footer-links li{
-  margin-bottom:.7rem;
+  margin-bottom:.8rem;
 }
 
 .footer-links a{
+  color:var(--steel);
   text-decoration:none;
-  color:var(--muted);
-  font-size:.9rem;
-  transition:.25s;
 }
 
 .footer-links a:hover{
-  color:var(--gold);
+  color:#fff;
 }
 
 .footer-bottom{
   grid-column:1/-1;
   border-top:1px solid var(--border);
-  margin-top:2rem;
   padding-top:2rem;
+  margin-top:1rem;
   display:flex;
   justify-content:space-between;
-  color:var(--muted);
-  font-size:.8rem;
+  color:#666;
+  font-size:.85rem;
 }
 
 /* MOBILE */
 
-@media(max-width:1100px){
+@media(max-width:1000px){
 
-  .section-grid{
+  .grid{
     grid-template-columns:1fr;
-  }
-
-  .features-grid{
-    grid-template-columns:1fr 1fr;
   }
 
   footer{
@@ -445,59 +328,72 @@ footer{
   }
 
   .nav-links{
-    display:none;
+    gap:1rem;
   }
 
   .hero{
-    padding:110px 1.5rem 70px;
-    min-height:70vh;
+    padding:120px 2rem 4rem;
   }
 
-  .section,
-  .features,
-  .cta{
-    padding:4rem 1.5rem;
+  .section{
+    padding:3rem 2rem;
   }
 
-  .section-image{
-    min-height:340px;
-  }
-
-  .features-grid{
+  .features{
     grid-template-columns:1fr;
   }
 
-  .image-strip{
+  .gallery{
     grid-template-columns:1fr;
-  }
-
-  .strip{
-    min-height:240px;
   }
 
   footer{
+    padding:3rem 2rem;
     grid-template-columns:1fr;
-    padding:4rem 1.5rem;
   }
 
   .footer-bottom{
     flex-direction:column;
     gap:1rem;
-    align-items:flex-start;
+  }
+
+}
+
+@media(max-width:480px){
+
+  nav{
+    flex-direction:column;
+    height:auto;
+    padding:1rem;
+    gap:1rem;
+  }
+
+  .nav-links{
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+
+  .hero{
+    padding:170px 1.2rem 3rem;
+  }
+
+  .section{
+    padding:2rem 1.2rem;
   }
 
 }
 
 </style>
 </head>
+
 <body>
 
-<!-- NAV -->
+<!-- NAVBAR -->
 
 <nav>
 
   <a href="index.html" class="nav-logo">
-    <img src="belnoor logo.png" style="width: 200px;">
+    <img src="belnoor logo.png" style="width:200px;">
   </a>
 
   <ul class="nav-links">
@@ -511,159 +407,127 @@ footer{
 
 <section class="hero">
 
-  <div class="hero-image"></div>
-  <div class="hero-grid"></div>
-
   <div class="hero-content">
 
     <div class="hero-label">
-      International Procurement & Supplier Networks
+      International Procurement Solutions
     </div>
 
     <h1 class="hero-title">
-      GLOBAL<br>
-      <span>SOURCING</span>
+      GLOBAL SOURCING
     </h1>
 
     <p class="hero-sub">
-      Belnoor connects businesses with trusted international suppliers through strategic sourcing, procurement intelligence, quality assurance, and cost-optimized global supply partnerships.
+      Belnoor connects businesses with verified global manufacturers and suppliers, delivering cost-effective sourcing solutions with uncompromising quality and reliability.
     </p>
 
   </div>
 
 </section>
 
-<!-- OVERVIEW -->
+<!-- CONTENT -->
 
 <section class="section">
 
-  <div class="section-grid">
+  <div class="grid">
 
-    <div>
+    <div class="content">
 
-      <div class="section-label">
-        Overview
-      </div>
+      <h2>Overview</h2>
 
-      <h2 class="section-title">
-        SMART SOURCING ACROSS GLOBAL MARKETS
-      </h2>
-
-      <p class="section-text">
-        Belnoor's Global Sourcing division helps organizations secure reliable suppliers, competitive pricing, and premium-quality industrial products from worldwide manufacturing hubs.
+      <p>
+        Belnoor’s Global Sourcing division specializes in identifying, evaluating,
+        and procuring products from trusted international suppliers across multiple
+        industries and markets worldwide.
       </p>
 
-      <p class="section-text">
-        Our sourcing specialists operate across Asia, Europe, the Middle East, and the Americas — building strong supplier relationships that ensure consistent quality, scalable production, and efficient lead times.
+      <p>
+        Our sourcing experts ensure every procurement process is efficient,
+        transparent, and aligned with international quality standards while
+        reducing operational costs and supply risks for our clients.
       </p>
 
-      <p class="section-text">
-        We manage supplier identification, negotiations, inspections, compliance verification, and logistics coordination to deliver end-to-end procurement solutions for businesses operating at global scale.
-      </p>
+      <h2>Capabilities</h2>
+
+      <div class="features">
+
+        <div class="feature">
+          <span>☆</span>
+          International Procurement
+        </div>
+
+        <div class="feature">
+          <span>☆</span>
+          Supplier Verification
+        </div>
+
+        <div class="feature">
+          <span>☆</span>
+          Cost Optimization
+        </div>
+
+        <div class="feature">
+          <span>☆</span>
+          Vendor Management
+        </div>
+
+        <div class="feature">
+          <span>☆</span>
+          Product Inspection
+        </div>
+
+        <div class="feature">
+          <span>☆</span>
+          Global Logistics Support
+        </div>
+
+      </div>
+
+      <div class="gallery">
+
+        <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop">
+
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop">
+
+        <img src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?q=80&w=1200&auto=format&fit=crop">
+
+      </div>
 
     </div>
 
-    <div class="section-image"></div>
+    <aside class="sidebar">
+
+      <div class="sidebar-card">
+
+        <h3>Need Global Sourcing?</h3>
+
+        <p>
+          Contact Belnoor specialists for international procurement, supplier sourcing, and worldwide logistics support.
+        </p>
+
+        <a href="#contact" class="btn">
+          Request Quote
+        </a>
+
+      </div>
+
+      <div class="sidebar-card">
+
+        <h3>Industries Served</h3>
+
+        <p>
+          Manufacturing<br>
+          Construction<br>
+          Automotive<br>
+          Energy & Utilities<br>
+          Marine & Infrastructure
+        </p>
+
+      </div>
+
+    </aside>
 
   </div>
-
-</section>
-
-<!-- FEATURES -->
-
-<section class="features">
-
-  <div class="features-header">
-
-    <div class="section-label">
-      Capabilities
-    </div>
-
-    <h2 class="section-title">
-      END-TO-END GLOBAL SOURCING SERVICES
-    </h2>
-
-  </div>
-
-  <div class="features-grid">
-
-    <div class="feature-card">
-      <div class="feature-icon">🌍</div>
-      <div class="feature-title">Supplier Identification</div>
-      <div class="feature-text">
-        Connecting businesses with verified manufacturers and trusted suppliers across international markets.
-      </div>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon">📋</div>
-      <div class="feature-title">Vendor Qualification</div>
-      <div class="feature-text">
-        Comprehensive supplier audits, capability analysis, and compliance verification for secure procurement.
-      </div>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon">💰</div>
-      <div class="feature-title">Cost Optimization</div>
-      <div class="feature-text">
-        Strategic negotiations and market intelligence to achieve competitive pricing and procurement savings.
-      </div>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon">🏭</div>
-      <div class="feature-title">Factory Inspections</div>
-      <div class="feature-text">
-        On-site production monitoring, quality inspections, and manufacturing verification before shipment.
-      </div>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon">⚖️</div>
-      <div class="feature-title">Compliance Management</div>
-      <div class="feature-text">
-        International standards verification, certifications, export compliance, and regulatory support.
-      </div>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon">🚢</div>
-      <div class="feature-title">Logistics Coordination</div>
-      <div class="feature-text">
-        Procurement integrated with shipping, customs clearance, freight forwarding, and delivery operations.
-      </div>
-    </div>
-
-  </div>
-
-</section>
-
-<!-- IMAGE STRIP -->
-
-<section class="image-strip">
-
-  <div class="strip strip1"></div>
-  <div class="strip strip2"></div>
-  <div class="strip strip3"></div>
-
-</section>
-
-<!-- CTA -->
-
-<section class="cta">
-
-  <h2 class="cta-title">
-    READY TO BUILD A <span>GLOBAL SUPPLY NETWORK?</span>
-  </h2>
-
-  <p class="cta-text">
-    From industrial equipment and manufacturing components to strategic procurement partnerships — Belnoor delivers reliable global sourcing solutions tailored to your operational goals.
-  </p>
-
-  <a href="#contact" class="btn">
-    Request A Quote
-  </a>
 
 </section>
 
@@ -675,12 +539,10 @@ footer{
 
     <div class="footer-logo">
       <a href="index.html" class="nav-logo">
-    <img src="belnoor logo.png" style="width: 200px;">
-  </a>
+        <img src="belnoor logo.png" style="width:200px;">
+      </a>
     </div>
 
-    <p class="footer-text">
-    </p>
 
   </div>
 
